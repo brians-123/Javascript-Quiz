@@ -16,7 +16,7 @@ h1 {
 }
 
 p {
-  font-size: 32px;
+  font-size: 40px;
   padding: 5px;
 }
 
@@ -25,6 +25,7 @@ button {
   color: white;
   margin: 3px;
   font-size: 24px;
+  border-radius: 5px;
 }
 
 #high-score-link {
@@ -46,5 +47,14 @@ button {
 }
 
 .answer-buttons {
-  /* display: none; */
+  display: none;
+}
+
+#correct-or-wrong {
+  display: none;
+  border-top: solid black 3px;
+  text-align: left;
+  font-size: 30px;
+  margin-top: 20px;
+  padding-top: 10px;
 }

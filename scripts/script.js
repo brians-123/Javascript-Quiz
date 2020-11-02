@@ -1,3 +1,6 @@
+//setting document.body as a variable to shorten text
+var body = document.body;
+
 //get the heading element
 var heading1 = document.querySelector("h1");
 //get the paragraph element
@@ -10,6 +13,20 @@ var viewHighscores = document.getElementById("high-score-link");
 var answerButtons = document.querySelectorAll(".answer-buttons");
 //get the four button answers individually so I can replace them
 //better
+
+//get the correct or wrong element
+var correctOrWrong = document.getElementById("correct-or-wrong");
+
+//add an area below for noting if correct. This could have been a
+//placeholder in the html but I want to practice adding an element
+// content = document.querySelector("content");
+// correctOrWrong = document.createElement("p");
+// correctOrWrong.innerHTML = "Correct!";
+// correctOrWrong.setAttribute(
+//   "style",
+//   "border-top: solid black 3px; text-align: left"
+// );
+// content.appendChild(correctOrWrong);
 
 //start a 75 second timer and add to console.log
 seconds = 75;
@@ -33,11 +50,9 @@ function startTimer(time) {
 //calls 'nextPage function' that loops through questions and answers
 
 document.getElementById("start-quiz").addEventListener("click", function () {
-  //this.style.backgroundColor = "red";
   this.style.display = "none";
   heading1.style.display = "none";
-  // paragraph.style.display = "none";
-  paragraph.style.fontSize = "30px";
+  paragraph.style.fontSize = "40px";
   paragraph.style.fontWeight = "bold";
   paragraph.style.textAlign = "left";
   paragraph.innerHTML = questions[0].q;
@@ -79,25 +94,21 @@ var questions = [
 document
   .getElementById("answer-one-button")
   .addEventListener("click", function () {
-    this.style.backgroundColor = "red";
     page(0);
   });
 document
   .getElementById("answer-two-button")
   .addEventListener("click", function () {
-    this.style.backgroundColor = "red";
     page(1);
   });
 document
   .getElementById("answer-three-button")
   .addEventListener("click", function () {
-    this.style.backgroundColor = "red";
     page(2);
   });
 document
   .getElementById("answer-four-button")
   .addEventListener("click", function () {
-    this.style.backgroundColor = "red";
     page(3);
   });
 
@@ -107,11 +118,15 @@ function page(id) {
   i = 0;
   if (questions[0]["a" + id] === questions[0].ca) {
     console.log("correct answer");
+    correctOrWrong.innerHTML = "Correct!";
+    correctOrWrong.style.display = "block";
   } else {
     console.log("incorrect answer");
     seconds = seconds - 5;
+    correctOrWrong.innerHTML = "Incorrect!";
+    correctOrWrong.style.display = "block";
   }
-  return id;
+  // return id;
 }
 
 console.log(questions[0].q);
@@ -139,6 +154,8 @@ var newDiv = document.createElement("div");
 
 i = 1;
 // answerOne.innerHTML = questions[i].a1;
+
+//Loop through the questions and change the display
 
 //set answer button styles and text
 for (var i = 0; i < 4; i++) {
