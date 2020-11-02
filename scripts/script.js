@@ -33,7 +33,6 @@ seconds = 75;
 
 function startTimer(time) {
   var countdownTimer = setInterval(function () {
-    console.log(seconds);
     timerDisplay.innerHTML = "Timer:" + seconds;
     seconds--;
     if (seconds < 0) {
@@ -45,18 +44,33 @@ function startTimer(time) {
 
 //make the existing html element 'timer'and 'view-highscores-link' visible
 
-//get the button element, add onclick event that does the following:
-//hides the button
-//calls 'nextPage function' that loops through questions and answers
+i = 0;
+var questionNumber = 0;
+function loadQuestions() {
+  if (questionNumber < questions.length) {
+    heading1.innerHTML = questions[questionNumber].q;
+    for (var j = 0; j < 4; j++) {
+      answerButtons[j].innerHTML = questions[questionNumber]["a" + j];
+    }
+    console.log("questionNumber after: " + questionNumber);
+    return questionNumber;
+  } else {
+    allDone();
+  }
+}
+
+console.log("i after everything: " + i);
 
 document.getElementById("start-quiz").addEventListener("click", function () {
   this.style.display = "none";
-  heading1.style.display = "none";
-  paragraph.style.fontSize = "40px";
-  paragraph.style.fontWeight = "bold";
+  paragraph.style.display = "none";
   paragraph.style.textAlign = "left";
-  paragraph.innerHTML = questions[0].q;
-
+  paragraph.style.fontSize = "20px";
+  heading1.style.fontSize = "40px";
+  heading1.style.fontWeight = "bold";
+  heading1.style.textAlign = "left";
+  loadQuestions(questionNumber);
+  console.log("questionNumber in start-quiz:" + questionNumber);
   //start the 60 countdown
   startTimer();
 
@@ -90,33 +104,43 @@ var questions = [
   },
 ];
 
-//add an onClick event to the each of the four buttons
+//add an onClick event to each of the four buttons
 document
   .getElementById("answer-one-button")
   .addEventListener("click", function () {
     page(0);
+    console.log("question in answer button one b4: " + questionNumber);
+    loadQuestions(questionNumber);
+    console.log("question in the answer one after: " + questionNumber);
   });
 document
   .getElementById("answer-two-button")
   .addEventListener("click", function () {
     page(1);
+    loadQuestions();
   });
 document
   .getElementById("answer-three-button")
   .addEventListener("click", function () {
     page(2);
+    loadQuestions();
   });
 document
   .getElementById("answer-four-button")
   .addEventListener("click", function () {
     page(3);
+    loadQuestions();
   });
 
 //
 function page(id) {
   //if the answer is correct display the value
-  i = 0;
-  if (questions[0]["a" + id] === questions[0].ca) {
+  console.log("questionNumber at page function" + questionNumber);
+  console.log("id: " + id);
+  console.log(
+    questions[questionNumber]["a" + id] + " and " + questions[questionNumber].ca
+  );
+  if (questions[questionNumber]["a" + id] === questions[questionNumber].ca) {
     console.log("correct answer");
     correctOrWrong.innerHTML = "Correct!";
     correctOrWrong.style.display = "block";
@@ -126,18 +150,9 @@ function page(id) {
     correctOrWrong.innerHTML = "Incorrect!";
     correctOrWrong.style.display = "block";
   }
+  questionNumber++;
   // return id;
 }
-
-console.log(questions[0].q);
-function nextPage(event) {
-  //remove default behavior on the submit button
-  nextPage.preventDefault;
-  //Cycle through the questions
-  for (i = 0; i < questions.length; i++) {}
-}
-
-//
 
 //remove the text from the heading element
 
@@ -152,14 +167,16 @@ var newDiv = document.createElement("div");
 
 //test where I'm updating the button text
 
-i = 1;
 // answerOne.innerHTML = questions[i].a1;
 
-//Loop through the questions and change the display
+//Loop through the questions and answers and change display
 
-//set answer button styles and text
-for (var i = 0; i < 4; i++) {
-  // console.log(questions[0]["a" + i]);
-  // console.log(answerButtons[i]);
-  answerButtons[i].innerHTML = questions[0]["a" + i];
+//load the enter your name page
+function allDone() {
+  heading1.innerHTML = "All Done!";
+  paragraph.style.display = "block";
+  paragraph.innerHTML = "your final score is :" + seconds;
+  for (var i = 0; i < answerButtons.length; i++) {
+    answerButtons[i].setAttribute("style", "display:hidden");
+  }
 }
