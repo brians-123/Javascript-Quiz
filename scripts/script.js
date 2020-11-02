@@ -54,50 +54,11 @@ document.getElementById("start-quiz").addEventListener("click", function () {
   }
 });
 
-//add an onClick event to the each of the four buttons
-document
-  .getElementById("answer-one-button")
-  .addEventListener("click", function () {
-    this.style.backgroundColor = "red";
-    page("answer-one-button");
-  });
-document
-  .getElementById("answer-two-button")
-  .addEventListener("click", function () {
-    this.style.backgroundColor = "red";
-    page("answer-two-button");
-  });
-document
-  .getElementById("answer-three-button")
-  .addEventListener("click", function () {
-    this.style.backgroundColor = "red";
-    page("answer-three-button");
-  });
-document
-  .getElementById("answer-four-button")
-  .addEventListener("click", function () {
-    this.style.backgroundColor = "red";
-    page("answer-four-button");
-  });
-
-// startQuiz.addEventListner("click", nextPage());
-function page(id) {
-  //if the answer is correct display the value
-  if (id === questions[i].ca) {
-    console.log("correct answer");
-  } else {
-    console.log("incorrect answer");
-    console.log(id);
-    console.log(i);
-    console.log(questions[i].ca);
-  }
-}
-
 //define an array object for questions. Have an object stored within it.
 var questions = [
   {
     q: "Which is the best language?",
-    ca: "Javascript",
+    ca: "JavaScript",
     a0: "Java",
     a1: "C",
     a2: "Visual Basic",
@@ -113,6 +74,45 @@ var questions = [
     a3: "the rest of my life",
   },
 ];
+
+//add an onClick event to the each of the four buttons
+document
+  .getElementById("answer-one-button")
+  .addEventListener("click", function () {
+    this.style.backgroundColor = "red";
+    page(0);
+  });
+document
+  .getElementById("answer-two-button")
+  .addEventListener("click", function () {
+    this.style.backgroundColor = "red";
+    page(1);
+  });
+document
+  .getElementById("answer-three-button")
+  .addEventListener("click", function () {
+    this.style.backgroundColor = "red";
+    page(2);
+  });
+document
+  .getElementById("answer-four-button")
+  .addEventListener("click", function () {
+    this.style.backgroundColor = "red";
+    page(3);
+  });
+
+//
+function page(id) {
+  //if the answer is correct display the value
+  i = 0;
+  if (questions[0]["a" + id] === questions[0].ca) {
+    console.log("correct answer");
+  } else {
+    console.log("incorrect answer");
+    seconds = seconds - 5;
+  }
+  return id;
+}
 
 console.log(questions[0].q);
 function nextPage(event) {
