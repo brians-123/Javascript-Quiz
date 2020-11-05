@@ -1,6 +1,5 @@
 //setting document.body as a variable to shorten text
 var body = document.body;
-
 //get the heading element
 var heading1 = document.querySelector("h1");
 //get the paragraph element
@@ -41,8 +40,8 @@ function startOrStopTimer(startOrStop) {
     //This isn't working and not sure why.
     if (seconds < 0 || startOrStop == "stopTimer") {
       clearInterval(countdownTimer);
-      console.log("startOrStop: " + startOrStop);
-      console.log("countdownTimer: " + countdownTimer);
+      // console.log("startOrStop: " + startOrStop);
+      // console.log("countdownTimer: " + countdownTimer);
       //go to the enter score page
     }
   }, 1000);
@@ -58,14 +57,14 @@ function loadQuestions() {
     for (var j = 0; j < 4; j++) {
       answerButtons[j].innerHTML = questions[questionNumber]["a" + j];
     }
-    console.log("questionNumber after: " + questionNumber);
+    // console.log("questionNumber after: " + questionNumber);
     return questionNumber;
   } else {
     allDone();
   }
 }
 
-console.log("i after everything: " + i);
+// console.log("i after everything: " + i);
 
 document.getElementById("start-quiz").addEventListener("click", function () {
   this.style.display = "none";
@@ -76,7 +75,7 @@ document.getElementById("start-quiz").addEventListener("click", function () {
   heading1.style.fontWeight = "bold";
   heading1.style.textAlign = "left";
   loadQuestions(questionNumber);
-  console.log("questionNumber in start-quiz:" + questionNumber);
+  // console.log("questionNumber in start-quiz:" + questionNumber);
   //start the 60 second countdown
   startOrStopTimer("startTimer");
 
@@ -115,9 +114,9 @@ document
   .getElementById("answer-one-button")
   .addEventListener("click", function () {
     page(0);
-    console.log("question in answer button one b4: " + questionNumber);
+    // console.log("question in answer button one b4: " + questionNumber);
     loadQuestions(questionNumber);
-    console.log("question in the answer one after: " + questionNumber);
+    // console.log("question in the answer one after: " + questionNumber);
   });
 document
   .getElementById("answer-two-button")
@@ -141,17 +140,17 @@ document
 //
 function page(id) {
   //if the answer is correct display the value
-  console.log("questionNumber at page function" + questionNumber);
-  console.log("id: " + id);
-  console.log(
-    questions[questionNumber]["a" + id] + " and " + questions[questionNumber].ca
-  );
+  // console.log("questionNumber at page function" + questionNumber);
+  // console.log("id: " + id);
+  // console.log(
+  // questions[questionNumber]["a" + id] + " and " + questions[questionNumber].ca
+  // );
   if (questions[questionNumber]["a" + id] === questions[questionNumber].ca) {
-    console.log("correct answer");
+    // console.log("correct answer");
     correctOrWrong.innerHTML = "Correct!";
     correctOrWrong.style.display = "block";
   } else {
-    console.log("incorrect answer");
+    // console.log("incorrect answer");
     seconds = seconds - 5;
     correctOrWrong.innerHTML = "Incorrect!";
     correctOrWrong.style.display = "block";
@@ -190,23 +189,55 @@ function allDone() {
   submitHighScore.style.display = "block";
   startOrStopTimer("stopTimer");
 }
+//create an array
+var priorScores = [];
+//push the prior scores into the array
 
 //create onclick event for submitting initials
 document
   .getElementById("submit-high-score")
   .addEventListener("click", function () {
     //append initials, and score into a high score key-value pair
-    var score = localStorage.setItem(initials.value, seconds);
+
+    var allScores = localStorage.setItem(
+      "questionsGame",
+      JSON.stringify(initials.value)
+    );
+    priorScores.push(JSON.parse(localStorage.getItem("questionsGame")));
+
+    // var priorScores = JSON.parse(localStorage.getItem("questionsGame"));
+    console.log("prior scores: " + priorScores);
+    // console.log(JSON.parse(score));
+
+    //commenting out and making simple above
+    // var score = localStorage.setItem(
+    //   "questionsGame",
+    //   JSON.stringify([seconds, initials.value])
+    // );
+    // console.log(JSON.parse(score));
+
+    // Create an Object, put into an Array, put into local Storage
+    // could use seconds value as ranking indicator on
+
+    //possibility to loop through the array checking the objects' seconds.
+    //
 
     //sort the object scores in descending order. use parseint?
 
     //create a new element for a table row and two table cells
     var myScore = document.createElement("td");
     myScore.style.cssText = "border: 1px solid black";
-    myScore.textContent = score;
-    console.log(localStorage.getItem("ab"));
-    // console.log(JSON.parse(localStorage.getItem("ab")));
+    myScore.textContent = allScores;
+    var myScoreObj = JSON.stringify(localStorage);
+    myScore.innerText = myScoreObj;
     document.body.appendChild(myScore);
+
+    //convert local storage to an object
+    console.log(JSON.stringify(localStorage.getItem));
+    //currently this takes ALL local storage.
+    //I only want to pull out the items related to this game.
+    //would I use a key and add a key of the game type and then add name + score into
+    //an array?
 
     //add the innerhtml from the local storage
 
