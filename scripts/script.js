@@ -11,16 +11,19 @@ var timerDisplay = document.getElementById("timer");
 var viewHighscores = document.getElementById("high-score-link");
 //get the four answer buttons
 var answerButtons = document.querySelectorAll(".answer-buttons");
-//get the four button answers individually so I can replace them
-//better
-
 //get the correct or wrong element
 var correctOrWrong = document.getElementById("correct-or-wrong");
+//get the enter your initials element
+var initials = document.getElementById("initials");
+//get the submit high score element
+var submitHighScore = document.getElementById("submit-high-score");
+//get the submit high score element
+var initialsPrompt = document.getElementById("initials-prompt");
 
 //add an area below for noting if correct. This could have been a
 //placeholder in the html but I want to practice adding an element
-// content = document.querySelector("content");
-// correctOrWrong = document.createElement("p");
+table = document.querySelector("table");
+
 // correctOrWrong.innerHTML = "Correct!";
 // correctOrWrong.setAttribute(
 //   "style",
@@ -31,12 +34,15 @@ var correctOrWrong = document.getElementById("correct-or-wrong");
 //start a 75 second timer and add to console.log
 seconds = 75;
 
-function startTimer(time) {
+function startOrStopTimer(startOrStop) {
   var countdownTimer = setInterval(function () {
     timerDisplay.innerHTML = "Timer:" + seconds;
     seconds--;
-    if (seconds < 0) {
+    //This isn't working and not sure why.
+    if (seconds < 0 || startOrStop == "stopTimer") {
       clearInterval(countdownTimer);
+      console.log("startOrStop: " + startOrStop);
+      console.log("countdownTimer: " + countdownTimer);
       //go to the enter score page
     }
   }, 1000);
@@ -71,8 +77,8 @@ document.getElementById("start-quiz").addEventListener("click", function () {
   heading1.style.textAlign = "left";
   loadQuestions(questionNumber);
   console.log("questionNumber in start-quiz:" + questionNumber);
-  //start the 60 countdown
-  startTimer();
+  //start the 60 second countdown
+  startOrStopTimer("startTimer");
 
   //change the formatting of existing elements to block
   //hide and unhide accordingly
@@ -165,8 +171,6 @@ var newDiv = document.createElement("div");
 
 //get the View Highscores element and make it visible
 
-//test where I'm updating the button text
-
 // answerOne.innerHTML = questions[i].a1;
 
 //Loop through the questions and answers and change display
@@ -175,8 +179,43 @@ var newDiv = document.createElement("div");
 function allDone() {
   heading1.innerHTML = "All Done!";
   paragraph.style.display = "block";
-  paragraph.innerHTML = "your final score is :" + seconds;
+  paragraph.innerHTML = "Your final score is : " + seconds;
   for (var i = 0; i < answerButtons.length; i++) {
     answerButtons[i].setAttribute("style", "display:hidden");
   }
+  initialsPrompt.style.display = "block";
+  // initialsPrompt.style.marginRight = "5px";
+  initials.style.display = "block";
+  initials.innerHTML = "Enter your initials";
+  submitHighScore.style.display = "block";
+  startOrStopTimer("stopTimer");
 }
+
+//create onclick event for submitting initials
+document
+  .getElementById("submit-high-score")
+  .addEventListener("click", function () {
+    //append initials, and score into a high score key-value pair
+    var score = localStorage.setItem(initials.value, seconds);
+
+    //sort the object scores in descending order. use parseint?
+
+    //create a new element for a table row and two table cells
+    var myScore = document.createElement("td");
+    myScore.style.cssText = "border: 1px solid black";
+    myScore.textContent = score;
+    console.log(localStorage.getItem("ab"));
+    // console.log(JSON.parse(localStorage.getItem("ab")));
+    document.body.appendChild(myScore);
+
+    //add the innerhtml from the local storage
+
+    //add the element to the page
+
+    //display the scores to the user
+  });
+
+//Create a Go Back button which restarts the quiz
+
+//Create a Clear Scores button, which will clear the scores both from display
+//and from the stored variables

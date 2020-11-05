@@ -58,3 +58,31 @@ button {
   margin-top: 20px;
   padding-top: 10px;
 }
+
+#initials {
+  display: none;
+  float: left;
+  font-size: 24px;
+  margin: 3px;
+}
+
+#initials-prompt {
+  display: none;
+  font-size: 20px;
+  text-align: left;
+  float: left;
+  font-size: 24px;
+  margin: 3px;
+}
+
+#submit-high-score {
+  display: none;
+}
+
+#high-score-table {
+  /* display: none; */
+  border: 1px solid black;
+  font-size: 24px;
+  background-color: beige;
+  width: 100%;
+}
