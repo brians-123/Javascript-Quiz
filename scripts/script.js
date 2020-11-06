@@ -190,24 +190,32 @@ function allDone() {
   startOrStopTimer("stopTimer");
 }
 //create an array
-var priorScores = [];
+var allScores = [];
+
 //push the prior scores into the array
 
 //create onclick event for submitting initials
+
 document
   .getElementById("submit-high-score")
   .addEventListener("click", function () {
-    //append initials, and score into a high score key-value pair
+    //starting over...
+    //get any values in local storage, if they exist by pulling into priorScores
+    // priorScores = JSON.parse(localStorage.getItem("questionsGame"));
+    allScores = [JSON.parse(localStorage.getItem("questionsGame"))];
 
+    // console.log(priorScores);
+    console.log(allScores);
+
+    //push the newest value into the array
+    allScores.push(2);
+    // priorScores.push(JSON.parse(localStorage.getItem("questionsGame")));
+
+    //append initials, and score into a high score key-value pair
     var allScores = localStorage.setItem(
       "questionsGame",
-      JSON.stringify(initials.value)
+      JSON.stringify(allScores)
     );
-    priorScores.push(JSON.parse(localStorage.getItem("questionsGame")));
-
-    // var priorScores = JSON.parse(localStorage.getItem("questionsGame"));
-    console.log("prior scores: " + priorScores);
-    // console.log(JSON.parse(score));
 
     //commenting out and making simple above
     // var score = localStorage.setItem(
@@ -225,25 +233,12 @@ document
     //sort the object scores in descending order. use parseint?
 
     //create a new element for a table row and two table cells
-    var myScore = document.createElement("td");
-    myScore.style.cssText = "border: 1px solid black";
+    var myScore = document.createElement("tr");
+    myScore.style.cssText = "border: 1px solid black, background-color: beige";
     myScore.textContent = allScores;
-    var myScoreObj = JSON.stringify(localStorage);
-    myScore.innerText = myScoreObj;
+    // var myScoreObj = JSON.stringify(localStorage);
+    myScore.innerText = allScores;
     document.body.appendChild(myScore);
-
-    //convert local storage to an object
-    console.log(JSON.stringify(localStorage.getItem));
-    //currently this takes ALL local storage.
-    //I only want to pull out the items related to this game.
-    //would I use a key and add a key of the game type and then add name + score into
-    //an array?
-
-    //add the innerhtml from the local storage
-
-    //add the element to the page
-
-    //display the scores to the user
   });
 
 //Create a Go Back button which restarts the quiz
