@@ -189,10 +189,10 @@ function allDone() {
   submitHighScore.style.display = "block";
   startOrStopTimer("stopTimer");
 }
-//create an array
+//create a global array
 var allScores = [];
 
-//push the prior scores into the array
+//push the prior scores into the array as an object
 
 //create onclick event for submitting initials
 
@@ -200,45 +200,28 @@ document
   .getElementById("submit-high-score")
   .addEventListener("click", function () {
     //starting over...
-    //get any values in local storage, if they exist by pulling into priorScores
-    // priorScores = JSON.parse(localStorage.getItem("questionsGame"));
-    allScores = [JSON.parse(localStorage.getItem("questionsGame"))];
+    var initialsVal = initials.value;
+    var myScoreObj = {
+      initals: initialsVal,
+      score: seconds,
+    };
 
-    // console.log(priorScores);
-    console.log(allScores);
+    allScores.push(myScoreObj);
 
-    //push the newest value into the array
-    allScores.push(2);
-    // priorScores.push(JSON.parse(localStorage.getItem("questionsGame")));
+    //sort the object by its scores value (seconds)
+    allScores.sort(function (a, b) {
+      return b.score - a.score;
+    });
 
-    //append initials, and score into a high score key-value pair
-    var allScores = localStorage.setItem(
-      "questionsGame",
-      JSON.stringify(allScores)
-    );
-
-    //commenting out and making simple above
-    // var score = localStorage.setItem(
-    //   "questionsGame",
-    //   JSON.stringify([seconds, initials.value])
-    // );
-    // console.log(JSON.parse(score));
-
-    // Create an Object, put into an Array, put into local Storage
-    // could use seconds value as ranking indicator on
-
-    //possibility to loop through the array checking the objects' seconds.
-    //
-
-    //sort the object scores in descending order. use parseint?
+    console.log(myScoreObj, allScores);
 
     //create a new element for a table row and two table cells
-    var myScore = document.createElement("tr");
+    var myScore = document.createElement("th");
     myScore.style.cssText = "border: 1px solid black, background-color: beige";
-    myScore.textContent = allScores;
+    myScore.textContent = myScoreObj.initals + myScoreObj.score;
     // var myScoreObj = JSON.stringify(localStorage);
-    myScore.innerText = allScores;
-    document.body.appendChild(myScore);
+    // myScore.innerText = allScores;
+    table.appendChild(myScore);
   });
 
 //Create a Go Back button which restarts the quiz

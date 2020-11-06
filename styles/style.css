@@ -86,3 +86,7 @@ button {
   background-color: beige;
   width: 100%;
 }
+
+th {
+  font-style: bold;
+}
