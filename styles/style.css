@@ -80,13 +80,18 @@ button {
 }
 
 #high-score-table {
-  /* display: none; */
+  display: none;
   border: 1px solid black;
   font-size: 24px;
   background-color: beige;
-  width: 100%;
 }
 
 th {
   font-style: bold;
+  font-size: 20px;
+  border: 2px solid black;
+}
+
+#retry-quiz {
+  display: none;
 }

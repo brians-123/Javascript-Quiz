@@ -1,22 +1,13 @@
 //setting document.body as a variable to shorten text
 var body = document.body;
-//get the heading element
 var heading1 = document.querySelector("h1");
-//get the paragraph element
 var paragraph = document.querySelector("p");
-//get the timer element
 var timerDisplay = document.getElementById("timer");
-//get the view Highscores element
 var viewHighscores = document.getElementById("high-score-link");
-//get the four answer buttons
 var answerButtons = document.querySelectorAll(".answer-buttons");
-//get the correct or wrong element
 var correctOrWrong = document.getElementById("correct-or-wrong");
-//get the enter your initials element
 var initials = document.getElementById("initials");
-//get the submit high score element
 var submitHighScore = document.getElementById("submit-high-score");
-//get the submit high score element
 var initialsPrompt = document.getElementById("initials-prompt");
 
 //add an area below for noting if correct. This could have been a
@@ -152,21 +143,6 @@ function page(id) {
   // return id;
 }
 
-//remove the text from the heading element
-
-//make an element below the buttons. We need a line, and
-//whether or not the prior answer was correct
-var answerFour = document.querySelector(".answer-four");
-var newDiv = document.createElement("div");
-
-//get the timer element and add countDownTimer to it
-
-//get the View Highscores element and make it visible
-
-// answerOne.innerHTML = questions[i].a1;
-
-//Loop through the questions and answers and change display
-
 //load the enter your name page
 function allDone() {
   heading1.innerHTML = "All Done!";
@@ -185,26 +161,24 @@ function allDone() {
 //create a global array
 var allScores = [];
 
-//push the prior scores into the array as an object
-
-//create onclick event for submitting initials
-
+//create onclick event for submitting initials and score
 document
   .getElementById("submit-high-score")
   .addEventListener("click", function () {
     //starting over...
+
     var initialsVal = initials.value;
     var myScoreObj = {
       initals: initialsVal,
       score: seconds,
     };
 
-    allScores.push(myScoreObj);
-
     //sort the object by its scores value (seconds)
     allScores.sort(function (a, b) {
-      return b.score - a.score;
+      return a.score - b.score;
     });
+
+    allScores.push(myScoreObj);
 
     console.log(myScoreObj, allScores);
 
@@ -222,30 +196,57 @@ document
     myRowEl.appendChild(myScoreEl);
     table.appendChild(myRowEl);
 
-    //Create a Retry Quiz button which restarts the quiz and deletes the elements we added to the page
-    var retryButtonEl = document.createElement("button");
-    retryButtonEl.textContent = "Retry Quiz";
-    retryButtonEl.id = "retry-quiz-button";
-    body.appendChild(retryButtonEl);
-
-    document
-      .getElementById("retry-quiz-button")
-      .addEventListener("click", function () {
-        //remove the table rows
-
-        //remove the  retry button
-
-        //hide the input initials,  submit button, view highscores, timer,
-
-        //remove the
-
-        alert("help!");
-      });
+    storeFinishers();
+    displayScores();
+    this.style.display = "none";
+    initialsPrompt.style = "";
+    initialsPrompt.innerHTML = "";
+    initials.style = "";
+    submitHighScore.style = "";
+    correctOrWrong.style = "";
+    correctOrWrong.innerHTML = "";
   });
 
-// document
-// .getElementById("answer-two-button")
-// .addEventListener("click", function () {
-//   page(1);
-//   loadQuestions();
-// });
+//push the allscores array into local storage
+function storeFinishers() {
+  localStorage.setItem("finishers", JSON.stringify(allScores));
+}
+
+//display a table of scores
+function displayScores() {
+  var retryQuizEl = (document.getElementById("retry-quiz").style.display =
+    "block");
+  var scoreTest = JSON.parse(localStorage.getItem("finishers"));
+  console.log(scoreTest);
+  console.log(scoreTest[0].initals + scoreTest[0].score);
+  table.style.display = "block";
+  heading1.innerHTML = "High Scores";
+}
+
+document.getElementById("retry-quiz").addEventListener("click", function () {
+  this.style.display = "";
+  body.style = null;
+  paragraph.style = null;
+  heading1.style = null;
+  paragraph.style = null;
+  timerDisplay.style = null;
+  viewHighscores.style = null;
+  answerButtons.style = "";
+  correctOrWrong.style = null;
+  initials.style = null;
+  submitHighScore.style = null;
+  initialsPrompt.style = null;
+  timerDisplay.style.display = "";
+  viewHighscores.style.display = "";
+  document.getElementById("start-quiz").style = "";
+
+  heading1.innerHTML = "Coding Quiz Challenge";
+  paragraph.innerHTML =
+    "You have 60 seconds to complete this quiz. <br>" +
+    "Wrong answers will result in losing 5 seconds from the timer.  <br>" +
+    "After you've finished you will see where you've placed amongst <br>" +
+    "the high scores.";
+  questionNumber = 0;
+  table.style = "";
+  seconds = 75;
+});
