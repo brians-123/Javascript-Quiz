@@ -23,13 +23,6 @@ var initialsPrompt = document.getElementById("initials-prompt");
 //placeholder in the html but I want to practice adding an element
 table = document.querySelector("table");
 
-// correctOrWrong.innerHTML = "Correct!";
-// correctOrWrong.setAttribute(
-//   "style",
-//   "border-top: solid black 3px; text-align: left"
-// );
-// content.appendChild(correctOrWrong);
-
 //start a 75 second timer and add to console.log
 seconds = 75;
 
@@ -215,16 +208,44 @@ document
 
     console.log(myScoreObj, allScores);
 
-    //create a new element for a table row and two table cells
-    var myScore = document.createElement("th");
-    myScore.style.cssText = "border: 1px solid black, background-color: beige";
-    myScore.textContent = myScoreObj.initals + myScoreObj.score;
+    //create a new element for a table header and two table cells
+    var myRowEl = document.createElement("tr");
+    //come back to loop this later
+    var myInitialsEl = document.createElement("td");
+    myInitialsEl.textContent = myScoreObj.initals;
     // var myScoreObj = JSON.stringify(localStorage);
     // myScore.innerText = allScores;
-    table.appendChild(myScore);
+    var myScoreEl = document.createElement("td");
+    myScoreEl.textContent = myScoreObj.score;
+
+    myRowEl.appendChild(myInitialsEl);
+    myRowEl.appendChild(myScoreEl);
+    table.appendChild(myRowEl);
+
+    //Create a Retry Quiz button which restarts the quiz and deletes the elements we added to the page
+    var retryButtonEl = document.createElement("button");
+    retryButtonEl.textContent = "Retry Quiz";
+    retryButtonEl.id = "retry-quiz-button";
+    body.appendChild(retryButtonEl);
+
+    document
+      .getElementById("retry-quiz-button")
+      .addEventListener("click", function () {
+        //remove the table rows
+
+        //remove the  retry button
+
+        //hide the input initials,  submit button, view highscores, timer,
+
+        //remove the
+
+        alert("help!");
+      });
   });
 
-//Create a Go Back button which restarts the quiz
-
-//Create a Clear Scores button, which will clear the scores both from display
-//and from the stored variables
+// document
+// .getElementById("answer-two-button")
+// .addEventListener("click", function () {
+//   page(1);
+//   loadQuestions();
+// });
