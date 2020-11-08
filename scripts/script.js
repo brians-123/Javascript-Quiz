@@ -14,9 +14,9 @@ var initialsPrompt = document.getElementById("initials-prompt");
 //placeholder in the html but I want to practice adding an element
 table = document.querySelector("table");
 
-//start a 75 second timer and add to console.log
-var seconds = 75;
-var countdownTimer = 75;
+//start a 60 second timer and add to console.log
+var seconds = 60;
+var countdownTimer = 60;
 function startOrStopTimer(startOrStop) {
   if (startOrStop === "startTimer") {
     //The intervalId isn't what's actually used to countdown
@@ -132,6 +132,7 @@ function page(id) {
   } else {
     // console.log("incorrect answer");
     seconds = seconds - 5;
+    countdownTimer = countdownTimer - 5;
     correctOrWrong.innerHTML = "Incorrect!";
     correctOrWrong.style.display = "block";
   }
@@ -183,6 +184,7 @@ document
 
     //create a new element for a table header and two table cells
     var myRowEl = document.createElement("tr");
+
     var myInitialsEl = document.createElement("td");
     myInitialsEl.textContent = myScoreObj.initals;
     var myScoreEl = document.createElement("td");
@@ -195,12 +197,6 @@ document
     storeFinishers();
     displayScores();
     this.style.display = "none";
-    initialsPrompt.style = "";
-    initialsPrompt.innerHTML = "";
-    initials.style = "";
-    submitHighScore.style = "";
-    correctOrWrong.style = "";
-    correctOrWrong.innerHTML = "";
   });
 
 //push the allscores array into local storage
@@ -215,6 +211,18 @@ function displayScores() {
   var scoreTest = JSON.parse(localStorage.getItem("finishers"));
   console.log(scoreTest);
   console.log(scoreTest[0].initals + scoreTest[0].score);
+  //hide elements after submit
+  initialsPrompt.style = "";
+  initialsPrompt.innerHTML = "";
+  initials.style = "";
+  submitHighScore.style = "";
+  correctOrWrong.style = "";
+  correctOrWrong.innerHTML = "";
+
+  //delete the any existing rows from the table
+
+  //add the sorted rows into the table
+
   table.style.display = "table";
   heading1.innerHTML = "High Scores";
 }
@@ -244,7 +252,7 @@ document.getElementById("retry-quiz").addEventListener("click", function () {
     "the high scores.";
   questionNumber = 0;
   table.style = "";
-  seconds = 75;
-  countdownTimer = 75;
+  seconds = 60;
+  countdownTimer = 60;
   startOrStopTimer("stopTimer");
 });
