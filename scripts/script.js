@@ -15,23 +15,29 @@ var initialsPrompt = document.getElementById("initials-prompt");
 table = document.querySelector("table");
 
 //start a 75 second timer and add to console.log
-seconds = 75;
-
+var seconds = 75;
+var countdownTimer = 75;
 function startOrStopTimer(startOrStop) {
-  var countdownTimer = setInterval(function () {
-    timerDisplay.innerHTML = "Timer:" + seconds;
-    seconds--;
-    //This isn't working and not sure why.
-    if (seconds < 0 || startOrStop == "stopTimer") {
-      clearInterval(countdownTimer);
-      // console.log("startOrStop: " + startOrStop);
-      // console.log("countdownTimer: " + countdownTimer);
-      //go to the enter score page
-    }
-  }, 1000);
+  if (startOrStop === "startTimer") {
+    //The intervalId isn't what's actually used to countdown
+    //It's just the identifier that we'll target later to stop
+    intervalId = setInterval(function () {
+      console.log(countdownTimer);
+      timerDisplay.innerHTML = "Timer:" + countdownTimer;
+      countdownTimer--;
+      // console.log(startOrStop);
+      // var seconds = countdownTimer;
+      if (countdownTimer <= 0) {
+        clearInterval(intervalId);
+      }
+    }, 1000);
+  } else if (countdownTimer <= 0 || startOrStop === "stopTimer") {
+    clearInterval(intervalId);
+    // alert("why aren't you working?");
+    console.log("this is within the else if" + startOrStop);
+  }
+  // var seconds = countdownTimer;
 }
-
-//make the existing html element 'timer'and 'view-highscores-link' visible
 
 i = 0;
 var questionNumber = 0;
@@ -41,14 +47,11 @@ function loadQuestions() {
     for (var j = 0; j < 4; j++) {
       answerButtons[j].innerHTML = questions[questionNumber]["a" + j];
     }
-    // console.log("questionNumber after: " + questionNumber);
     return questionNumber;
   } else {
     allDone();
   }
 }
-
-// console.log("i after everything: " + i);
 
 document.getElementById("start-quiz").addEventListener("click", function () {
   this.style.display = "none";
@@ -59,8 +62,6 @@ document.getElementById("start-quiz").addEventListener("click", function () {
   heading1.style.fontWeight = "bold";
   heading1.style.textAlign = "left";
   loadQuestions(questionNumber);
-  // console.log("questionNumber in start-quiz:" + questionNumber);
-  //start the 60 second countdown
   startOrStopTimer("startTimer");
 
   //change the formatting of existing elements to block
@@ -124,11 +125,6 @@ document
 //
 function page(id) {
   //if the answer is correct display the value
-  // console.log("questionNumber at page function" + questionNumber);
-  // console.log("id: " + id);
-  // console.log(
-  // questions[questionNumber]["a" + id] + " and " + questions[questionNumber].ca
-  // );
   if (questions[questionNumber]["a" + id] === questions[questionNumber].ca) {
     // console.log("correct answer");
     correctOrWrong.innerHTML = "Correct!";
@@ -140,7 +136,6 @@ function page(id) {
     correctOrWrong.style.display = "block";
   }
   questionNumber++;
-  // return id;
 }
 
 //load the enter your name page
@@ -173,22 +168,23 @@ document
       score: seconds,
     };
 
+    allScores.push(myScoreObj);
+
     //sort the object by its scores value (seconds)
     allScores.sort(function (a, b) {
-      return a.score - b.score;
+      return b.score - a.score;
     });
 
-    allScores.push(myScoreObj);
+    // allScores = allScores.sort(
+    //   (a, b) => parseFloat(b.score) - parseFloat(a.score)
+    // );
 
     console.log(myScoreObj, allScores);
 
     //create a new element for a table header and two table cells
     var myRowEl = document.createElement("tr");
-    //come back to loop this later
     var myInitialsEl = document.createElement("td");
     myInitialsEl.textContent = myScoreObj.initals;
-    // var myScoreObj = JSON.stringify(localStorage);
-    // myScore.innerText = allScores;
     var myScoreEl = document.createElement("td");
     myScoreEl.textContent = myScoreObj.score;
 
@@ -219,7 +215,7 @@ function displayScores() {
   var scoreTest = JSON.parse(localStorage.getItem("finishers"));
   console.log(scoreTest);
   console.log(scoreTest[0].initals + scoreTest[0].score);
-  table.style.display = "block";
+  table.style.display = "table";
   heading1.innerHTML = "High Scores";
 }
 
@@ -249,4 +245,6 @@ document.getElementById("retry-quiz").addEventListener("click", function () {
   questionNumber = 0;
   table.style = "";
   seconds = 75;
+  countdownTimer = 75;
+  startOrStopTimer("stopTimer");
 });
