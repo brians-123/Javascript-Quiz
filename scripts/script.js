@@ -21,7 +21,6 @@ function startOrStopTimer(startOrStop) {
     //The intervalId isn't what's actually used to countdown
     //It's just the identifier that we'll target later to stop
     myIntervalId = setInterval(function () {
-      console.log(secondsAndScore);
       timerDisplay.innerHTML = "Timer:" + secondsAndScore;
       secondsAndScore--;
       if (secondsAndScore <= 0) {
@@ -30,8 +29,6 @@ function startOrStopTimer(startOrStop) {
     }, 1000);
   } else if (secondsAndScore <= 0 || startOrStop === "Stop Timer") {
     clearInterval(myIntervalId);
-    // alert("why aren't you working?");
-    console.log("this is within the else if" + startOrStop);
   }
   timerDisplay.innerHTML = "Timer:" + secondsAndScore;
 }
@@ -110,9 +107,7 @@ document
   .getElementById("answer-one-button")
   .addEventListener("click", function () {
     page(0);
-    // console.log("question in answer button one b4: " + questionNumber);
     loadQuestions(questionNumber);
-    // console.log("question in the answer one after: " + questionNumber);
   });
 document
   .getElementById("answer-two-button")
@@ -133,9 +128,8 @@ document
     loadQuestions();
   });
 
-//
+//display correct or incorrect after the questions are answered
 function page(id) {
-  //if the answer is correct display the value
   if (questions[questionNumber]["a" + id] === questions[questionNumber].ca) {
     correctOrWrong.innerHTML = "Correct!";
     correctOrWrong.style.display = "block";
@@ -176,27 +170,17 @@ document
 
     allScores.push(myScoreObj);
 
+    //delete any existing rows from the table
+    table.innerHTML = "";
+
     //sort the object by its scores value (secondsAndScore)
     allScores.sort(function (a, b) {
       return b.score - a.score;
     });
 
-    console.log(myScoreObj, allScores);
-
-    //create a new element for a table header and two table cells
-    var myRowEl = document.createElement("tr");
-
-    var myInitialsEl = document.createElement("td");
-    myInitialsEl.textContent = myScoreObj.initals;
-    var myScoreEl = document.createElement("td");
-    myScoreEl.textContent = myScoreObj.score;
-
-    myRowEl.appendChild(myInitialsEl);
-    myRowEl.appendChild(myScoreEl);
-    table.appendChild(myRowEl);
-
     storeFinishers();
     displayScores();
+    //hide the button
     this.style.display = "none";
   });
 
@@ -210,8 +194,33 @@ function displayScores() {
   var retryQuizEl = (document.getElementById("retry-quiz").style.display =
     "block");
   var scoreTest = JSON.parse(localStorage.getItem("finishers"));
-  console.log(scoreTest);
-  console.log(scoreTest[0].initals + scoreTest[0].score);
+
+  //make a header row for the table
+  myHeaderRowEl = document.createElement("tr");
+  myHeaderInitialsEl = document.createElement("th");
+  myHeaderInitialsEl.textContent = "Initials";
+  myHeaderScoreEl = document.createElement("th");
+  myHeaderScoreEl.textContent = "Score";
+
+  myHeaderRowEl.appendChild(myHeaderInitialsEl);
+  myHeaderRowEl.appendChild(myHeaderScoreEl);
+  table.appendChild(myHeaderRowEl);
+
+  //loop over the scores to display them
+  // Render a new table row for each score submitted
+  for (var i = 0; i < scoreTest.length; i++) {
+    var score = scoreTest[i];
+
+    myRowEl = document.createElement("tr");
+    var myInitialsEl = document.createElement("td");
+    myInitialsEl.textContent = scoreTest[i].initals;
+    var myScoreEl = document.createElement("td");
+    myScoreEl.textContent = scoreTest[i].score;
+
+    myRowEl.appendChild(myInitialsEl);
+    myRowEl.appendChild(myScoreEl);
+    table.appendChild(myRowEl);
+  }
   //hide elements after submit
   initialsPrompt.style = "";
   initials.style = "";
@@ -219,10 +228,7 @@ function displayScores() {
   correctOrWrong.style = "";
   correctOrWrong.innerHTML = "";
 
-  //delete any existing rows from the table
-
-  //add the sorted rows into the table
-
+  //display the table
   table.style.display = "table";
   heading1.innerHTML = "High Scores";
 }
