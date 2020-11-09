@@ -14,32 +14,28 @@ var initialsPrompt = document.getElementById("initials-prompt");
 //placeholder in the html but I want to practice adding an element
 table = document.querySelector("table");
 
-//start a 60 second timer and add to console.log
-var seconds = 60;
-var countdownTimer = 60;
+//start a 60 second timer
+var secondsAndScore = 60;
 function startOrStopTimer(startOrStop) {
-  if (startOrStop === "startTimer") {
+  if (startOrStop === "Start Timer") {
     //The intervalId isn't what's actually used to countdown
     //It's just the identifier that we'll target later to stop
-    intervalId = setInterval(function () {
-      console.log(countdownTimer);
-      timerDisplay.innerHTML = "Timer:" + countdownTimer;
-      countdownTimer--;
-      // console.log(startOrStop);
-      // var seconds = countdownTimer;
-      if (countdownTimer <= 0) {
-        clearInterval(intervalId);
+    myIntervalId = setInterval(function () {
+      console.log(secondsAndScore);
+      timerDisplay.innerHTML = "Timer:" + secondsAndScore;
+      secondsAndScore--;
+      if (secondsAndScore <= 0) {
+        clearInterval(myIntervalId);
       }
     }, 1000);
-  } else if (countdownTimer <= 0 || startOrStop === "stopTimer") {
-    clearInterval(intervalId);
+  } else if (secondsAndScore <= 0 || startOrStop === "Stop Timer") {
+    clearInterval(myIntervalId);
     // alert("why aren't you working?");
     console.log("this is within the else if" + startOrStop);
   }
-  // var seconds = countdownTimer;
+  timerDisplay.innerHTML = "Timer:" + secondsAndScore;
 }
 
-i = 0;
 var questionNumber = 0;
 function loadQuestions() {
   if (questionNumber < questions.length) {
@@ -62,7 +58,7 @@ document.getElementById("start-quiz").addEventListener("click", function () {
   heading1.style.fontWeight = "bold";
   heading1.style.textAlign = "left";
   loadQuestions(questionNumber);
-  startOrStopTimer("startTimer");
+  startOrStopTimer("Start Timer");
 
   //change the formatting of existing elements to block
   //hide and unhide accordingly
@@ -78,12 +74,11 @@ var questions = [
   {
     q: "Which is the best language?",
     ca: "JavaScript",
-    a0: "Java",
+    a0: "JavaScript",
     a1: "C",
     a2: "Visual Basic",
-    a3: "JavaScript",
+    a3: "English",
   },
-
   {
     q: "How long is this class?",
     ca: "6 months",
@@ -91,6 +86,22 @@ var questions = [
     a1: "3 months",
     a2: "6 months",
     a3: "the rest of my life",
+  },
+  {
+    q: 'What does this return? "7" == 7',
+    ca: "True",
+    a0: "False.",
+    a1: "7",
+    a2: "Undefined",
+    a3: "True",
+  },
+  {
+    q: 'What does this return? "7" === 7?',
+    ca: "False",
+    a0: "True",
+    a1: "7",
+    a2: "Undefined",
+    a3: "False",
   },
 ];
 
@@ -126,13 +137,10 @@ document
 function page(id) {
   //if the answer is correct display the value
   if (questions[questionNumber]["a" + id] === questions[questionNumber].ca) {
-    // console.log("correct answer");
     correctOrWrong.innerHTML = "Correct!";
     correctOrWrong.style.display = "block";
   } else {
-    // console.log("incorrect answer");
-    seconds = seconds - 5;
-    countdownTimer = countdownTimer - 5;
+    secondsAndScore = secondsAndScore - 5;
     correctOrWrong.innerHTML = "Incorrect!";
     correctOrWrong.style.display = "block";
   }
@@ -143,16 +151,15 @@ function page(id) {
 function allDone() {
   heading1.innerHTML = "All Done!";
   paragraph.style.display = "block";
-  paragraph.innerHTML = "Your final score is : " + seconds;
+  paragraph.innerHTML = "Your final score is : " + secondsAndScore;
   for (var i = 0; i < answerButtons.length; i++) {
     answerButtons[i].setAttribute("style", "display:hidden");
   }
   initialsPrompt.style.display = "block";
-  // initialsPrompt.style.marginRight = "5px";
   initials.style.display = "block";
   initials.innerHTML = "Enter your initials";
   submitHighScore.style.display = "block";
-  startOrStopTimer("stopTimer");
+  startOrStopTimer("Stop Timer");
 }
 //create a global array
 var allScores = [];
@@ -161,24 +168,18 @@ var allScores = [];
 document
   .getElementById("submit-high-score")
   .addEventListener("click", function () {
-    //starting over...
-
     var initialsVal = initials.value;
     var myScoreObj = {
       initals: initialsVal,
-      score: seconds,
+      score: secondsAndScore,
     };
 
     allScores.push(myScoreObj);
 
-    //sort the object by its scores value (seconds)
+    //sort the object by its scores value (secondsAndScore)
     allScores.sort(function (a, b) {
       return b.score - a.score;
     });
-
-    // allScores = allScores.sort(
-    //   (a, b) => parseFloat(b.score) - parseFloat(a.score)
-    // );
 
     console.log(myScoreObj, allScores);
 
@@ -213,13 +214,12 @@ function displayScores() {
   console.log(scoreTest[0].initals + scoreTest[0].score);
   //hide elements after submit
   initialsPrompt.style = "";
-  initialsPrompt.innerHTML = "";
   initials.style = "";
   submitHighScore.style = "";
   correctOrWrong.style = "";
   correctOrWrong.innerHTML = "";
 
-  //delete the any existing rows from the table
+  //delete any existing rows from the table
 
   //add the sorted rows into the table
 
@@ -252,7 +252,7 @@ document.getElementById("retry-quiz").addEventListener("click", function () {
     "the high scores.";
   questionNumber = 0;
   table.style = "";
-  seconds = 60;
-  countdownTimer = 60;
-  startOrStopTimer("stopTimer");
+  secondsAndScore = 60;
+  initials.textContent = "";
+  startOrStopTimer("Stop Timer");
 });
