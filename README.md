@@ -47,19 +47,9 @@ WHEN the game is over
 THEN I can save my initials and score
 ```
 
-## Mock-Up
-
-```
-The following animation demonstrates the application functionality:
-
-![code quiz](./Assets/04-web-apis-homework-demo.gif)
-
-```
-
 ## Credits
 
 ```
-The user story, acceptance criteria and Mock-up were starting parameters
-from our couse.
+The user story and acceptance criteria were starting parametersfrom our course.
 © 2020 Trilogy Education Services, a 2U, Inc. brand. All Rights Reserved.
 ```
