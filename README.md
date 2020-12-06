@@ -1,4 +1,4 @@
-# Web-API-HW
+# Javascript Quiz
 
 ```
 Homework for week 4 of the UW coding bootcamp. Hosted on Github: https://brians-123.github.io/Web-API-HW/
